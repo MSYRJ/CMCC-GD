@@ -56,7 +56,7 @@ APTV_M3U_FILENAME = "aptv.m3u"    # APTV回看参数格式文件 (新增)
 XML_FILENAME = "t.xml"            # XML节目单文件
 
 # 播放代理与替换配置
-REPLACEMENT_IP = "http://c.cc.top:7088/udp"  # UDPXY地址
+REPLACEMENT_IP = "http://192.168.10.1:5140/rtp"  # UDPXY地址
 REPLACEMENT_IP_TV = ""            # tv.m3u 专用的 UDPXY 地址（默认为空，使用原始地址）
 CATCHUP_SOURCE_PREFIX = "http://183.235.162.80:6610/190000002005"  # 回看源前缀
 NGINX_PROXY_PREFIX = ""           # 针对外网播放的nginx代理
@@ -93,12 +93,12 @@ EXTERNAL_M3U_URL = "https://raw.githubusercontent.com/Jsnzkpg/Jsnzkpg/Jsnzkpg/Js
 EXTERNAL_GROUP_TITLES = {
     "港澳台": "港澳台"
 }
-ENABLE_EXTERNAL_M3U_MERGE = True  # 是否合并外部 M3U 到所有 M3U 文件 (True/False)
+ENABLE_EXTERNAL_M3U_MERGE = False  # 是否合并外部 M3U 到所有 M3U 文件 (True/False)
 CACHE_M3U_FILENAME = "cache.m3u"  # 外部 M3U 下载缓存文件名
 
 # ===================== 智能测活与质量探测配置 =====================
 ENABLE_STREAM_CHECK = True         # 是否启用 iptv_checker_v3 对频道进行存活与质量检测
-CHECK_TARGET_GROUPS = ["港澳台"]    # 需要被检测的分组名称列表 (空列表 [] 则检测所有组)
+CHECK_TARGET_GROUPS = []    # 需要被检测的分组名称列表 (空列表 [] 则检测所有组)
 CHECK_TIMEOUT = 5                  # 单个频道探测超时时间(秒)
 CHECK_WORKERS = 4                  # 并发检测线程数 (群晖建议 4-8)
 ENABLE_PROBE = True                # 是否启用 ffprobe 进行 1080P/4K 画质深度探测
@@ -908,7 +908,7 @@ def generate_m3u_content(grouped_channels, replace_url, catchup_template=CATCHUP
                 
             if ch.get("supports_catchup") and ch.get("ztecode"):
                 catch_url = ensure_url_scheme(catchup_template.format(prefix=final_catchup_prefix, ztecode=ch["ztecode"]))
-                extinf.extend(['catchup="default"', f'catchup-source="{catch_url}"'])
+                extinf.extend(['catchup="default"', 'catchup-days="7"', f'catchup-source="{catch_url}"'])
                 catchup_enabled_count += 1
                 
             title = ch.get("final_name", ch["title"])

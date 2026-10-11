@@ -27,3 +27,6 @@ config/probe_cache.json
 web_raw.m3u
 web.m3u
 
+remote.xml
+config/myconfig.json
+*.log
